@@ -1,0 +1,74 @@
+version: '3.4'
+services:
+  # mysqldb:
+  #   image: mysql:latest
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: t00r
+  #     MYSQL_USER: autonomous
+  #     MYSQL_PASSWORD: autonomous
+  #   restart: on-failure
+  #   volumes:
+  #   - ${DEFAULT_DATA_DIR}/mysql_data:/var/lib/mysql
+  #   - ./mysql/my.cnf:/etc/mysq/my.cnf
+  #   ports:
+  #    - 3306:3306
+
+  # mariadb:
+  #   image: mariadb:latest
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: t00r
+  #     MYSQL_USER: autonomous
+  #     MYSQL_PASSWORD: autonomous
+  #   restart: on-failure
+  #   volumes:
+  #   - ${DEFAULT_DATA_DIR}/mariadb_data:/var/lib/mysql
+  #   - ./maria/my.cnf:/etc/mysq/my.cnf
+  #   ports:
+  #   - 3309:3306
+
+  redis:
+    image: "redis:alpine"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    volumes:
+    - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    - ./redis/data:/data
+    sysctls:
+      - net.core.somaxconn=511
+    ports:
+      - "6379:6379"
+    networks:
+      node_net:
+        ipv4_address: 172.28.1.3
+
+  # redis2:
+  #   image: "redis:alpine"
+  #   environment:
+  #     - REDIS_REPLICATION_MODE=master
+  #   sysctls:
+  #     - net.core.somaxconn=511
+  #   ports:
+  #     - "7379:6379"
+  #   networks:
+  #     node_net:
+  #       ipv4_address: 172.28.1.4
+
+  mongodb:
+    image: "mongo"
+    container_name: "mongodb-container"
+    environment:
+      - MONGO_INITDB_DATABASE=autobot
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=t00r
+    volumes:
+      - ./mongodb:/data/db
+    ports:
+      - '27017-27019:27017-27019'
+
+# networking for the Redis container
+networks:
+  node_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
