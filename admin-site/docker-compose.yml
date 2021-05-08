@@ -11,15 +11,15 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - /Users/thangle/volumes/mysql_data:/var/lib/mysql
-      - /Users/thangle/volumes/mysql/my.cnf:/etc/mysq/my.cnf
+      - $HOME/volumes/mysql_data:/var/lib/mysql
+      - $HOME/volumes/mysql/my.cnf:/etc/mysq/my.cnf
   redis:
     image: "redis:alpine"
     environment:
       - REDIS_REPLICATION_MODE=master
     volumes:
-    - /Users/thangle/volumes/redis/redis.conf:/usr/local/etc/redis/redis.conf
-    - /Users/thangle/volumes/redis/data:/data
+    - $HOME/volumes/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    - $HOME/volumes/redis/data:/data
     sysctls:
       - net.core.somaxconn=511
     ports:
