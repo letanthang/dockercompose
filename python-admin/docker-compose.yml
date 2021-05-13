@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  admin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: autonomous-admin-site
+    hostname: autonomous-admin-site
+    container_name: autonomous-admin-site
+    # restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/source
+    stdin_open: true
+    tty: true
+    command: ['python','wsgi.py']
+
+  admindb:
+    image: mariadb:10.1
+    container_name: admindb
+    ports:
+      - 33066:3306
+    volumes:
+      - ./user.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=autonomous-local
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
+    # restart: always
+    volumes:
+     - ${PWD}/mariadb:/var/lib/mysql
+
+  redis:
+    image: redis:6.0.3-alpine
+    container_name: "my_redis"
+    ports:
+      - "6379:6379"
+    # restart: always
+    ## UNCOMMENT THESE LINES IF WE USE CUSTOM REDIS CONFIG ##
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+networks:
+  default:
+    external:
+      name: autonomous-network
