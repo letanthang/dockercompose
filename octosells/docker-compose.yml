@@ -6,39 +6,6 @@
 
 version: "2"
 services:
-  api:
-    container_name: octosells-api
-    build:
-      context: .
-      args:
-        - APP=octosells_api
-        - PORT=8001
-        - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-
-    environment:
-      - OCTOSELLS_DB_URL=${OCTOSELLS_DB_URL}
-      - OCTOSELLS_REPLICA_DB_URLS=${OCTOSELLS_REPLICA_DB_URLS}
-      - OCTOSELLS_REDIS_URL=${OCTOSELLS_REDIS_URL}
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
-      - HOST=${HOST}
-      - PORT=${PORT}
-      - JOB_QUEUE_REDIS_URL=${JOB_QUEUE_REDIS_URL}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-      - AWS_REGION=${AWS_REGION}
-      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
-      - OCTOSELLS_ECTO_ENCRYPT_KEY=${OCTOSELLS_ECTO_ENCRYPT_KEY}
-      - AWS_SQS_QUEUE_URL=${AWS_SQS_QUEUE_URL}
-      - OCTOSELLS_ELASTICSEARCH_URL=${OCTOSELLS_ELASTICSEARCH_URL}
-      - OCTOSELLS_ELASTICSEARCH_USERNAME=${OCTOSELLS_ELASTICSEARCH_USERNAME}
-      - OCTOSELLS_ELASTICSEARCH_PASSWORD=${OCTOSELLS_ELASTICSEARCH_PASSWORD}
-      - MONGODB_URL=${MONGODB_URL}
-
-    ports:
-      - "4000:4000"
-    networks:
-      - backend
-
   postgres:
     container_name: octosells-postgres
     image: "postgres:12-alpine"
@@ -68,18 +35,18 @@ services:
     networks:
       - backend
 
-  elasticsearch:
-    image: elasticsearch:7.17.3
-    container_name: octosells-elasticsearch
-    environment:
-      # - "ES_JAVA_OPTS=-Xmx256m -Xms256m"
-      - ELASTIC_PASSWORD=changeme
-      - discovery.type=single-node
-      - xpack.security.enabled=true
-    ports:
-      - 9200:9200
-    networks:
-      - backend
+  # elasticsearch:
+  #   image: elasticsearch:7.17.3
+  #   container_name: octosells-elasticsearch
+  #   environment:
+  #     # - "ES_JAVA_OPTS=-Xmx256m -Xms256m"
+  #     - ELASTIC_PASSWORD=changeme
+  #     - discovery.type=single-node
+  #     - xpack.security.enabled=true
+  #   ports:
+  #     - 9200:9200
+  #   networks:
+  #     - backend
 
   mongo:
     image: "mongo"
@@ -91,16 +58,16 @@ services:
     networks:
       - backend
 
-  elasticmq:
-    image: "softwaremill/elasticmq-native"
-    container_name: octosells-elastic-mq
-    ports:
-      - 9324:9324
-      - 9325:9325
-    volumes:
-      - "./elastic.conf.sample:/opt/elasticmq.conf"
-    networks:
-      - backend
+  # elasticmq:
+  #   image: "softwaremill/elasticmq-native"
+  #   container_name: octosells-elastic-mq
+  #   ports:
+  #     - 9324:9324
+  #     - 9325:9325
+  #   volumes:
+  #     - "./elastic.conf.sample:/opt/elasticmq.conf"
+  #   networks:
+  #     - backend
 
 volumes:
   redis_data:
