@@ -6,20 +6,20 @@
 
 version: "2"
 services:
-  postgres:
-    container_name: octosells-postgres
-    image: "postgres:12-alpine"
-    volumes:
-      - "postgres_data:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=octosell_dev
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    restart: always
-    networks:
-      - backend
+  # postgres:
+  #   container_name: octosells-postgres
+  #   image: "postgres:12-alpine"
+  #   volumes:
+  #     - "postgres_data:/var/lib/postgresql/data"
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     - POSTGRES_DB=octosell_dev
+  #     - POSTGRES_USER=postgres
+  #     - POSTGRES_PASSWORD=postgres
+  #   restart: always
+  #   networks:
+  #     - backend
 
   redis:
     image: "bitnami/redis:5.0"
@@ -57,7 +57,6 @@ services:
       - "mongo_data:/data/db"
     networks:
       - backend
-
   # elasticmq:
   #   image: "softwaremill/elasticmq-native"
   #   container_name: octosells-elastic-mq
